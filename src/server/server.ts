@@ -1,6 +1,8 @@
-import express, { Application } from "express";
+import * as express from "express";
+import { Application } from "express";
 import helloWorld from "../router/hello-world.router";
-import { clientConnectionDataBase } from "../database/config.db";
+import usersRoutes from "../router/UsersRouter";
+import {databaseConnection} from "../database/connection";
 
 class Server {
   
@@ -14,12 +16,22 @@ class Server {
     this.app = express();
     this.port = process.env.PORT || '8000';
 
+    this.middlewares();
     this.configureRoutes();
-    clientConnectionDataBase();
+    this.databaseInit();
+  }
+
+  private middlewares() {
+    this.app.use(express.json());
   }
 
   private configureRoutes() {
     this.app.use('/api', helloWorld);
+    this.app.use('/api/users', usersRoutes);
+  }
+
+  private async databaseInit() {
+    await databaseConnection.initialize();
   }
 
   private app: Application;
