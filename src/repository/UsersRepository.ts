@@ -16,4 +16,8 @@ export class UsersRepository {
     console.log("Creating user", this.repository);
     return this.repository.save(user);
   }
+
+  async findByEmail(email: string): Promise<Users | null> {
+    return this.repository.findOneBy({email});
+  }
 }

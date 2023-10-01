@@ -17,4 +17,8 @@ export class UsersService {
     return this.usersRepository.createUser(newUser);
   }
 
+  async findByEmail(email: string | undefined = '') {
+    return this.usersRepository.findByEmail(email);
+  }
+
 }
