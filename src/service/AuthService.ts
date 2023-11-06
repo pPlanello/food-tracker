@@ -17,7 +17,7 @@ export class AuthService {
     let tokenGeneration;
     // Verify google token
     const user = await this.googleService.verify(googleToken);
-  
+    
     // Create user if not exist
     let userFind = await this.usersService.findByEmail(user?.email);
 
@@ -26,8 +26,12 @@ export class AuthService {
 
       // Generate token
       tokenGeneration = await generateJWT(user.id);
+    } else {
+      // Generate token
+      tokenGeneration = await generateJWT(userFind!.id);
     }
 
+    console.log(' ********* tokenGeneration', tokenGeneration);
     return tokenGeneration;
   }
 

@@ -1,3 +1,4 @@
+import { UserAttributes } from "../database/models/Users";
 import { UsersRepository } from "../repository/UsersRepository";
 
 export class UsersService {
@@ -8,13 +9,8 @@ export class UsersService {
     this.usersRepository = new UsersRepository();
   }
 
-  async createUser(user: any) {
-
-    const newUser = {
-      username: "pablo", password: "password", email: "pablo@gmail.com"
-    }
-
-    return this.usersRepository.createUser(newUser);
+  async createUser(user: UserAttributes) {
+    return this.usersRepository.createUser(user);
   }
 
   async findByEmail(email: string | undefined = '') {

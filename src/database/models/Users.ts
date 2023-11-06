@@ -10,7 +10,7 @@ export interface UserAttributes {
 @Entity()
 export class Users {
   @PrimaryColumn()
-  id: number;
+  id: string;
 
   @Column()
   username: string;

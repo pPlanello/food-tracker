@@ -6,7 +6,9 @@ const authService = new AuthService();
 export const loginGoogle = async (request: Request, response: Response) => {
 
   try {
-    const result = authService.login(request.body);
+    const idToken: string = request.body.id_token;
+    
+    const result = authService.login(idToken);
 
     response.status(200).json(result);
   } catch (error) {
