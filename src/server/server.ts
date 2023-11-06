@@ -1,5 +1,6 @@
 import * as express from "express";
 import { Application } from "express";
+const cors = require('cors');
 import helloWorld from "../router/hello-world.router";
 import authRoutes from "../router/AuthRouter";
 import usersRoutes from "../router/UsersRouter";
@@ -24,6 +25,9 @@ class Server {
 
   private middlewares() {
     this.app.use(express.json());
+
+    // Public directory
+    this.app.use( express.static('public'));
   }
 
   private configureRoutes() {
