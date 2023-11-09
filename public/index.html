@@ -30,15 +30,16 @@
             function handleCredentialResponse(response) {
 
                const body = {id_token: response.credential};
+               const url = window.location.href;
 
-               fetch('http://localhost:8080/auth/web', {
+               fetch(url + '/auth/web', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(body)
                })
                 .then(resp => resp.json())
                 .then(resp => {
-                    console.log(JSON.stringify(resp))
+                    console.log(' ************ ', JSON.stringify(resp))
                     localStorage.setItem('email', resp.user.email);
                     location.reload();
                 })
