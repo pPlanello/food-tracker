@@ -1,11 +1,18 @@
-import * as express from "express";
+import express from "express";
 import { Application } from "express";
+
 import helloWorld from "../router/hello-world.router";
 import authRoutes from "../router/AuthRouter";
 import usersRoutes from "../router/UsersRouter";
 import {databaseConnection} from "../database/connection";
+import {documentedApi} from "./swaggerGenerator"
+
+const swaggerUi = require('swagger-ui-express');
 
 class Server {
+
+  private app: Application;
+  private port: string;
   
   listen() {
     this.app.listen(this.port, () => {
@@ -30,6 +37,8 @@ class Server {
   }
 
   private configureRoutes() {
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(documentedApi));
+
     this.app.use('/api', helloWorld);
     this.app.use('/auth', authRoutes);
     this.app.use('/api/users', usersRoutes);
@@ -38,9 +47,6 @@ class Server {
   private async databaseInit() {
     await databaseConnection.initialize();
   }
-
-  private app: Application;
-  private port: string;
 }
 
 export default Server;
