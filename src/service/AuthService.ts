@@ -13,12 +13,22 @@ export class AuthService {
     this.googleService = new GoogleService();
   }
 
-  async login(googleToken: string) {
-    let tokenGeneration;
+  async loginWeb(googleToken: string) {
     // Verify google token
-    const user = await this.googleService.verify(googleToken);
+    const user = await this.googleService.verifyWeb(googleToken);
     
-    // Create user if not exist
+    return await this.generateJWTByUser(user);
+  }
+
+  async loginAndroid(googleToken: string) {
+    // Verify google token
+    const user = await this.googleService.verifyAndroid(googleToken);
+    
+    return await this.generateJWTByUser(user);
+  }
+
+  private async generateJWTByUser(user: UserAttributes | undefined) {
+    let tokenGeneration;
     let userFind = await this.usersService.findByEmail(user?.email);
 
     if (userFind == null && user != null) {
@@ -30,8 +40,9 @@ export class AuthService {
       // Generate token
       tokenGeneration = await generateJWT(userFind!.id);
     }
-
+    
     console.log(' ********* tokenGeneration', tokenGeneration);
+
     return tokenGeneration;
   }
 
